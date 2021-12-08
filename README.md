@@ -2,7 +2,7 @@
 Implementation of Tractor local ancestry pipeline not relying on HAIL  
 Revised Dec 8, 2021 - Michael
 
-Uses [Gnomix](https://github.com/AI-sandbox/gnomix) for local ancestry inference
+Uses [G-Nomix](https://github.com/AI-sandbox/gnomix) for local ancestry inference
 
 ## Prerequisites
 Libraries:
@@ -22,7 +22,7 @@ Other:
 - A .fam file, with phenotype information (could be the same file used from above, but with .fam extension), and column order [FID, IID, PAT, MAT, SEX, PHENO1] (no header), with the path assigned to `fam_file` in the .env file
 
 ## Configuration
-Gnomix has a few configuration settings that you can change; the pipeline will still work with non-default settings, but you may need to add lines in the training & running to copy result files from the LISA TMPDIR to a permanent directory. In changing the inference type, the main thing that changes is the runtime and the size of the models, so make sure to increase the time limit for submitted SLURM jobs, otherwise the job will terminate prematurely.
+G-Nomix has a few configuration settings that you can change; the pipeline will still work with non-default settings, but you may need to add lines in the training & running to copy result files from the LISA TMPDIR to a permanent directory. In changing the inference type, the main thing that changes is the runtime and the size of the models, so make sure to increase the time limit for submitted SLURM jobs, otherwise the job will terminate prematurely.
 
 ## Usage
 ### 1) Edit .env
@@ -30,7 +30,7 @@ Gnomix has a few configuration settings that you can change; the pipeline will s
 - Set REF_DIR to the absolute path of the directory with the reference VCF files, split by chromosome, with each file named `refpanel_chr${CHR}.vcf.gz`, where ${CHR} is the chromosome number (1-22, this has not been tested on X)
     - Note that these reference subjects should contain most of the SNPs contained in the sample data you plan to run local ancestry inference (LAI) on.
 
-### 2) Install Gnomix
+### 2) Install G-Nomix
 ```
 bash 00_install_gnomix.sh
 ```
@@ -60,7 +60,7 @@ Note: this usually takes ~15min-1hr depending on data size for the "default" inf
 export $(cat .env | xargs); sbatch --array=1-22 --time=02:00:00 --error ${WORKING_DIR}/errandout/${study}/training/train_%a.e --output ${WORKING_DIR}/errandout/${study}/training/train_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR,REF_DIR=$REF_DIR,ref_subjects=$ref_subjects  01_train_gnomix.sh -D $WORKING_DIR
 ```
 
-### 5) Run xgmix model local ancestry prediction
+### 5) Run G-Nomix model local ancestry prediction
 Note: this usually ~10min for the "default" inference type
 WAIT FOR TRAINING TO FINISH, then:
 ```
@@ -102,6 +102,4 @@ The pipeline is a bit primitive, and for most will be a hackable example rather 
 
      for (SLURM_ARRAY_TASK_ID in seq 1 1 22) ; do ... job script contents ... ; done  ;  
 
-   You'll also need to install whatever compiling libraries are necessary to install xgmix by yourself
-
-   You also may need to use shorter blocks for splitting the chromosomes (eg 30 mega-basepairs) as xgmix uses a lot of memory
+   You'll also need to install whatever compiling libraries are necessary to install G-Nomix by yourself
