@@ -1,5 +1,5 @@
 #!/bin/bash
-# export $(cat .env | xargs); sbatch --array=1-22 --time=05:00:00 --error ${WORKING_DIR}/errandout/${study}/training/train_%a.e --output ${WORKING_DIR}/errandout/${study}/training/train_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR,REF_DIR=$REF_DIR,ref_subjects=$ref_subjects  01_train_gnomix.sh -D $WORKING_DIR
+# export $(cat .env | xargs); sbatch --array=1-22 --time=00:45:00 --error ${WORKING_DIR}/errandout/${study}/training/train_%a.e --output ${WORKING_DIR}/errandout/${study}/training/train_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR,REF_DIR=$REF_DIR,ref_subjects=$ref_subjects  01_train_gnomix.sh -D $WORKING_DIR
 
 ##Ancestry panel code:
 chr=$SLURM_ARRAY_TASK_ID
@@ -34,6 +34,6 @@ python3 gnomix.py  ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombinatio
 #OUTPUTS:
 
 #Copy ancestry calls and models
-rsync -rav  models/${study}_${chr}/*  ${WORKING_DIR}/models/${study}/${chr} --exclude simulation_output
+rsync -rav  models/${study}_${chr}/models/model_chm_${chr}/model_chm_${chr}.pkl  ${WORKING_DIR}/models/${study}/${chr}
 
 #simulation data currently excluded

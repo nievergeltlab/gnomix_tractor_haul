@@ -24,11 +24,27 @@ Other:
 ## Configuration
 G-Nomix has a few configuration settings that you can change; the pipeline will still work with non-default settings, but you may need to add lines in the training & running to copy result files from the LISA TMPDIR to a permanent directory. In changing the inference type, the main thing that changes is the runtime and the size of the models, so make sure to increase the time limit for submitted SLURM jobs, otherwise the job will terminate prematurely.
 
+If you want to use the *snp_level_inference* setting, note that you no longer need to run the `03_run_lanc_expansion.sh` script in *Step (6)*, instead there will be an output in `predictions/${study}/${chr}` named `query_results.lai`, which has a row for every SNP (keyed on SNP position, so some manipulation will be necessary to get RS ID), and each column is every individual's first and second haplotype, with each entry having a 0 for AFR, 1 for EUR, and 2 for AMR ancestry.
+
+## Benchmarking
+Note that this is using default settings with `sbatch` on LISA, split by chromosome (so train/prediction time is basically how long it takes to run chromosome 1, since it is the largest)
+
+| Inference type | SNP Level | Train time | Prediction time | Model size | Predictions size |
+| --- | --- | --- | --- | --- | --- |
+| default | False | 21 min | 7 min | 133 MB | 5.9 GB |
+| default | True | 35 min | 38 min | 133 MB | 140 GB |
+| best | False | 19 hr 17 min | 4h 45min | 21 GB |
+
 ## Usage
 ### 1) Edit .env
-- Set WORKING_DIR to the absolute path of the directory to run the ancestry pipeline inside
-- Set REF_DIR to the absolute path of the directory with the reference VCF files, split by chromosome, with each file named `refpanel_chr${CHR}.vcf.gz`, where ${CHR} is the chromosome number (1-22, this has not been tested on X)
+- Set `WORKING_DIR` to the absolute path of the directory to run the ancestry pipeline inside
+- Set `REF_DIR` to the absolute path of the directory with the reference VCF files, split by chromosome, with each file named `refpanel_chr${CHR}.vcf.gz`, where ${CHR} is the chromosome number (1-22, this has not been tested on X)
     - Note that these reference subjects should contain most of the SNPs contained in the sample data you plan to run local ancestry inference (LAI) on.
+- Set `study` to the name of the study
+- Set `ref_subjects` to the path to the text file containing reference subject IIDs and ancestral origins
+- Set `input_data_file` to the path and prefix of the bed/bim/fam files (e.g. if your files are in /home/user/data and they are named mystudy.bed, mystudy.bim, mystudy.fam, then you would set `input_data=/home/user/data/mystudy`)
+- Set `fam_file` to the full path of the fam file containing phenotype information of each individual in the query data (the data to run local ancestry inference on)
+
 
 ### 2) Install G-Nomix
 ```

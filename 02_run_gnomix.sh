@@ -1,5 +1,5 @@
 #!/bin/bash
-# export $(cat .env | xargs); sbatch --array=1-22 --time=00:30:00 --error ${WORKING_DIR}/errandout/${study}/running/run_%a.e --output ${WORKING_DIR}/errandout/${study}/running/run_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR,REF_DIR=$REF_DIR,ref_subjects=$ref_subjects  02_run_gnomix.sh -D $WORKING_DIR
+# export $(cat .env | xargs); sbatch --array=1-22 --time=00:45:00 --error ${WORKING_DIR}/errandout/${study}/running/run_%a.e --output ${WORKING_DIR}/errandout/${study}/running/run_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR,REF_DIR=$REF_DIR,ref_subjects=$ref_subjects  02_run_gnomix.sh -D $WORKING_DIR
 
 chr=$SLURM_ARRAY_TASK_ID
 
@@ -29,7 +29,7 @@ cp ${WORKING_DIR}/${study}/phased/${study}_phased_chr${chr}.vcf.gz .
 
 #Run gnomix
 #python3 gnomix.py <query_file>                      <genetic_map_file>                                                    <output_folder>        <chr_nr> <phase>  <path_to_model>
-python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  gnomix/${study}_${chr}/ ${chr}    FALSE  ${WORKING_DIR}/models/${study}/${chr}/models/model_chm_${chr}/model_chm_${chr}.pkl
+python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  gnomix/${study}_${chr}/ ${chr}    FALSE  ${WORKING_DIR}/models/${study}/${chr}/model_chm_${chr}.pkl
 
 #OUTPUTS:
 
