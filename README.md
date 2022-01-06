@@ -33,7 +33,7 @@ Note that this is using default settings with `sbatch` on LISA, split by chromos
 | --- | --- | --- | --- | --- | --- |
 | default | False | 21 min | 7 min | 133 MB | 5.9 GB |
 | default | True | 35 min | 38 min | 133 MB | 140 GB |
-| best | False | 19 hr 17 min | 4h 45min | 21 GB |
+| best | False | 19 hr 17 min | 4h 45min | 21 GB | 5.1 GB |
 
 ## Usage
 ### 1) Edit .env
