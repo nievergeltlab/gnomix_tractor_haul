@@ -29,7 +29,10 @@ cp ${WORKING_DIR}/${study}/phased/${study}_phased_chr${chr}.vcf.gz .
 
 #Run gnomix
 #python3 gnomix.py <query_file>                      <genetic_map_file>                                                    <output_folder>        <chr_nr> <phase>  <path_to_model>
-python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  gnomix/${study}_${chr}/ ${chr}    FALSE  ${WORKING_DIR}/models/${study}/${chr}/model_chm_${chr}.pkl
+#python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  gnomix/${study}_${chr}/ ${chr}    FALSE  ${WORKING_DIR}/models/${study}/${chr}/model_chm_${chr}.pkl
+
+python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz gnomix/${study}_${chr}/   ${chr}    FALSE  ${WORKING_DIR}/models/${study}/${chr}/model_chm_${chr}.pkl
+
 
 #OUTPUTS:
 
