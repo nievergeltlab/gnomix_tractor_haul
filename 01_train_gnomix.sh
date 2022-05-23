@@ -7,12 +7,13 @@ chr=$SLURM_ARRAY_TASK_ID
 #Call into LISA temp dir
 cd $TMPDIR
 
+
 #Copy gnomix data over to temp dir. This is just to make it easier to deal with paths
 rsync -rav  ${WORKING_DIR}/gnomix/*  $TMPDIR
 
 #Make directories for gnomix outputs..
 mkdir -p models/${study}_${chr}
-mkdir -p ${WORKING_DIR}/models/${study}/${chr}
+mkdir -p ${WORKING_DIR}/models/${study}/${chr} 
 
 ##Create reference panel
 
@@ -28,12 +29,12 @@ cp ${WORKING_DIR}/${study}/phased/${study}_phased_chr${chr}.vcf.gz .
 #Make sure recomb file is tab delimited
 
 #Run xgmix
-#python3 gnomix.py <query_file>                       <genetic_map_file>                                                    <output_folder>       <chr_nr> <phase> <reference_file>       <sample_map_file>
-python3 gnomix.py  ${study}_phased_chr${chr}.vcf.gz  ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  models/${study}_${chr}  ${chr}  FALSE  refpanel_chr${chr}.vcf.gz  $ref_subjects
+python3 gnomix.py ${study}_phased_chr${chr}.vcf.gz models/${study}_${chr}  ${chr} FALSE ${WORKING_DIR}/recombination_maps/HapMapcomb_genmap_chr${chr}_tab.txt  refpanel_chr${chr}.vcf.gz   $ref_subjects
 
 #OUTPUTS:
 
 #Copy ancestry calls and models
-rsync -rav  models/${study}_${chr}/models/model_chm_${chr}/model_chm_${chr}.pkl  ${WORKING_DIR}/models/${study}/${chr}
+#rsync -rav  models/${study}_${chr}/models/model_chm_${chr}/model_chm_${chr}.pkl  ${WORKING_DIR}/models/${study}/${chr}
+rsync -rav  models/${study}_${chr}/models/model_chm_${chr}/*  ${WORKING_DIR}/models/${study}/${chr}
 
 #simulation data currently excluded
