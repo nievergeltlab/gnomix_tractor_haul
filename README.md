@@ -86,6 +86,7 @@ export $(cat .env | xargs); sbatch --array=1-22 --time=00:30:00 --error ${WORKIN
 ### 6) Expand local ancestry predictions from start and stop windows to SNPs
 
 #### local ancestry expansion
+POSSIBLY OUTDATED: set 'snp_level_inference: True ' in the config.yaml file
 ```
 export $(cat .env | xargs); sbatch --array=1-22 --time=12:00:00 --ntasks=1 --cpus-per-task=16 --error ${WORKING_DIR}/errandout/${study}/expansion/lanc_expansion_%a.e --output ${WORKING_DIR}/errandout/${study}/expansion/lanc_expansion_%a.o  --export=ALL,study=$study,WORKING_DIR=$WORKING_DIR  03_run_lanc_expansion.sh -D $WORKING_DIR
 ```
