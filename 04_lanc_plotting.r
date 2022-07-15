@@ -17,9 +17,9 @@ library(plyr)
 for (i in c(1:22))
 {
   preddir <- paste(dir, "predictions", study, i, sep="/")
-  file <- paste(preddir, "/query_results.msp", sep="")
+  file <- paste(preddir, "/query_results.msp.tsv", sep="")
   print(file)
-	assign(paste("chr_", i, sep=""), fread(file), data.table=F))
+	assign(paste("chr_", i, sep=""), fread(file, data.table=F))
 }
 
 #parse the text list of data frame names as a list of data frames
@@ -49,8 +49,8 @@ for (subj in 1:nsub){
   kp <- plotKaryotype(chromosomes=c("autosomal"), plot.type="2")
   
   #Color the switches based on LANC
-  kpPlotRegions(kp, hap_switches, col=DM[,7 + (subj - 1) * 2] + 1, data.panel = 1) #The +1 is to make it so the color index starts at black
-  kpPlotRegions(kp, hap_switches, col=DM[,8 + (subj - 1) * 2] + 1, data.panel = 2) #(subj-1)*2 controls the indexing because every adjacent pair columns is a subject. Subject columns start at 7
+  kpPlotRegions(kp, hap_switches, col=abs(DM[,7 + (subj - 1) * 2] + 1 -3) , data.panel = 1) #The +1 is to make it so the color index starts at black
+  kpPlotRegions(kp, hap_switches, col=abs(DM[,8 + (subj - 1) * 2] + 1 -3), data.panel = 2) #(subj-1)*2 controls the indexing because every adjacent pair columns is a subject. Subject columns start at 7
   dev.off()
 }
  
